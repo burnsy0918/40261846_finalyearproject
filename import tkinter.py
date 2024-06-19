@@ -50,6 +50,8 @@ def updategraph():
         art.remove()
     if(figure_plot.get_legend()!= None):
         figure_plot.get_legend().remove()
+    for text in list(figure_plot.texts):
+        text.remove()
     
     if(button1['relief']== 'sunken'):
         data_points = fetch_values.fetch_algo1_values(dsbutton1['relief'], dsbutton2['relief'], dsbutton3['relief'],
@@ -58,6 +60,10 @@ def updategraph():
         dataframe = dataframe[['x', 'y']].groupby('x').sum()
         dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
             color='r', marker='o', fontsize=10)
+        avg_y =dataframe['y'].mean()
+        figure_plot.axhline(y=avg_y, color='r', linestyle='--')
+        figure_plot.text(0.25, 0.95, f'Average y: {avg_y:2f}', verticalalignment='top', horizontalalignment='right',
+                     transform=figure_plot.transAxes, color='r', fontsize=12)
         
     if(button2['relief']== 'sunken'):
         data_points = fetch_values.fetch_algo2_values(dsbutton1['relief'], dsbutton2['relief'], dsbutton3['relief'],
@@ -66,6 +72,10 @@ def updategraph():
         dataframe = dataframe[['x', 'y']].groupby('x').sum()
         dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
             color='b', marker='o', fontsize=10)
+        avg_y =dataframe['y'].mean()
+        figure_plot.axhline(y=avg_y, color='b', linestyle='--')
+        figure_plot.text(0.25, 0.90, f'Average y: {avg_y:2f}', verticalalignment='top', horizontalalignment='right',
+                     transform=figure_plot.transAxes, color='b', fontsize=12)
         
     if(button3['relief']== 'sunken'):
         data_points = fetch_values.fetch_algo3_values(dsbutton1['relief'], dsbutton2['relief'], dsbutton3['relief'],
@@ -74,7 +84,12 @@ def updategraph():
         dataframe = dataframe[['x', 'y']].groupby('x').sum()
         dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
             color='g', marker='o', fontsize=10)
+        avg_y =dataframe['y'].mean()
+        figure_plot.axhline(y=avg_y, color='g', linestyle='--')
+        figure_plot.text(0.25, 0.85, f'Average y: {avg_y:2f}', verticalalignment='top', horizontalalignment='right',
+                     transform=figure_plot.transAxes, color='g', fontsize=12)
         
+    
     line_graph.draw()
 
 root = tkinter.Tk()
