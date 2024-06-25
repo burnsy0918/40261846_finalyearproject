@@ -53,6 +53,17 @@ def freqtoggle(Button):
     Button.config(background=colour1)
     Button.config(foreground=colour3)
     
+def sourcetoggle(Button):
+    sourcebutton1.config(relief='raised')
+    sourcebutton1.config(background=colour3)
+    sourcebutton1.config(foreground=colour4)
+    sourcebutton2.config(relief='raised')
+    sourcebutton2.config(background=colour3)
+    sourcebutton2.config(foreground=colour4)
+    Button.config(relief='sunken')
+    Button.config(background=colour1)
+    Button.config(foreground=colour3)
+    
 def updategraph():
     for art in list(figure_plot.lines):
         art.remove()
@@ -67,8 +78,12 @@ def updategraph():
     if(typebutton1['relief']== 'sunken'):
         figure_plot.set_ylabel('Time (ms)')
         if(button1['relief']== 'sunken'):
-            data_points = fetch_values.fetch_lagrange_time_values(dsbutton1['relief'], dsbutton3['relief'],
-                                            freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            if(sourcebutton1['relief']=='sunken'):
+                data_points = fetch_values.fetch_lagrange_time_values(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            elif(sourcebutton2['relief']=='sunken'):
+                data_points = fetch_values.fetch_lagrange_time_values_SQL(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
             dataframe = pd.DataFrame(data_points)
             dataframe = dataframe[['N', 'Time (ms)']].groupby('N').sum()
             dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
@@ -81,8 +96,12 @@ def updategraph():
         
         
         if(button3['relief']== 'sunken'):
-            data_points = fetch_values.fetch_FGG_time_values(dsbutton1['relief'], dsbutton3['relief'],
-                                            freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            if(sourcebutton1['relief']=='sunken'):
+                data_points = fetch_values.fetch_FGG_time_values(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            elif(sourcebutton2['relief']=='sunken'):
+                data_points = fetch_values.fetch_FGG_time_values_SQL(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
             dataframe = pd.DataFrame(data_points)
             dataframe = dataframe[['N', 'Time (ms)']].groupby('N').sum()
             dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
@@ -96,8 +115,12 @@ def updategraph():
     elif(typebutton2['relief']== 'sunken'):
         figure_plot.set_ylabel('Energy (V)x10^6')
         if(button1['relief']== 'sunken'):
-            data_points = fetch_values.fetch_lagrange_energy_values(dsbutton1['relief'], dsbutton3['relief'],
-                                            freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            if(sourcebutton1['relief']=='sunken'):
+                data_points = fetch_values.fetch_lagrange_energy_values(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            elif(sourcebutton2['relief']=='sunken'):
+                data_points = fetch_values.fetch_lagrange_energy_values_SQL(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
             dataframe = pd.DataFrame(data_points)
             dataframe = dataframe[['N', 'Energy (V)x10^6']].groupby('N').sum()
             dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
@@ -109,8 +132,12 @@ def updategraph():
             last1= dataframe['Energy (V)x10^6'].iloc[-1]
                 
         if(button3['relief']== 'sunken'):
-            data_points = fetch_values.fetch_FGG_energy_values(dsbutton1['relief'], dsbutton3['relief'],
-                                            freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            if(sourcebutton1['relief']=='sunken'):
+                data_points = fetch_values.fetch_FGG_energy_values(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
+            elif(sourcebutton1['relief']=='sunken'):
+                data_points = fetch_values.fetch_FGG_energy_values_SQL(dsbutton1['relief'], dsbutton3['relief'],
+                                                freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
             dataframe = pd.DataFrame(data_points)
             dataframe = dataframe[['N', 'Energy (V)x10^6']].groupby('N').sum()
             dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
@@ -131,7 +158,6 @@ root = tkinter.Tk()
 
 root.geometry("700x600")
 root.configure(background='#7A7776')
-# Code to add widgets will go here...
 
 colour1 = '#020f12'
 colour2 = '#05d7ff'
@@ -142,14 +168,49 @@ chart_frame = tkinter.Frame(root, bg = '#7A7776', pady=40, height=190)
 chart_frame.pack(fill=tkinter.BOTH, expand=TRUE)
 
 figure = plt.Figure(figsize=(5,4), dpi=100)
-#rows, cols, index position
 figure_plot = figure.add_subplot(1, 1, 1)
 figure_plot.set_ylabel('Time (ms)') 
 line_graph = FigureCanvasTkAgg(figure, chart_frame)
 line_graph.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH)
 figure_plot.set_title('Line Graph')
-#canvas = tkinter.Canvas(chart_frame, width=400, height=300, bg='white')
-#canvas.pack()
+
+sourcebutton1 = tkinter.Button(
+    chart_frame,
+    background=colour1,
+    foreground=colour3,
+    activebackground=colour3,
+    activeforeground=colour4,
+    highlightthickness = 5,
+    highlightcolor = 'white',
+    highlightbackground = 'white',
+    height=1,
+    width=12,
+    border=0,
+    cursor='hand1',
+    text='Excel',
+    relief="sunken",
+    command= lambda: [sourcetoggle(sourcebutton1), updategraph()]
+)
+sourcebutton1.pack(side = "left")
+
+sourcebutton2 = tkinter.Button(
+    chart_frame,
+    background=colour3,
+    foreground=colour4,
+    activebackground=colour3,
+    activeforeground=colour4,
+    highlightthickness = 5,
+    highlightcolor = 'white',
+    highlightbackground = 'white',
+    height=1,
+    width=12,
+    border=0,
+    cursor='hand1',
+    text='SQL',
+    relief="raised",
+    command=lambda: [sourcetoggle(sourcebutton2), updategraph()]
+)
+sourcebutton2.pack(side = "right")
 
 algo_frame = tkinter.Frame(root, bg = '#7A7776', pady=40, height=100)
 algo_frame.pack(fill=tkinter.BOTH, expand=TRUE)
@@ -175,8 +236,6 @@ button1 = tkinter.Button(
     command= lambda: [toggle(button1), updategraph()]
 )
 button1.grid(row=0, column=0)
-#button1.pack()
-#button1.place(x=100)
 
 typebutton1 = tkinter.Button(
     type_frame,
@@ -196,8 +255,6 @@ typebutton1 = tkinter.Button(
     command=lambda: [typetoggle(typebutton1), updategraph()]
 )
 typebutton1.grid(row=0, column=0)
-#typebutton1.pack()
-#typebutton1.place(x=100)
 
 typebutton2 = tkinter.Button(
     type_frame,
@@ -217,8 +274,6 @@ typebutton2 = tkinter.Button(
     command=lambda: [typetoggle(typebutton2), updategraph()]
 )
 typebutton2.grid(row=0, column=1)
-#typebutton2.pack()
-#typebutton2.place(x=100)
 
 button3 = tkinter.Button(
     algo_frame,
@@ -238,7 +293,6 @@ button3 = tkinter.Button(
     command=lambda: [toggle(button3), updategraph()]
 )
 button3.grid(row=0, column=2)
-#button3.pack()
 
 
 
@@ -263,29 +317,6 @@ dsbutton1 = tkinter.Button(
     command= lambda: [dstoggle(dsbutton1), updategraph()]
 )
 dsbutton1.grid(row=0, column=0, padx=(100,10))
-#button1.pack()
-#button1.place(x=100)
-
-# dsbutton2 = tkinter.Button(
-#     dataset_frame,
-#     background=colour3,
-#     foreground=colour4,
-#     activebackground=colour3,
-#     activeforeground=colour4,
-#     highlightthickness = 5,
-#     highlightcolor = 'white',
-#     highlightbackground = 'white',
-#     height=1,
-#     width=12,
-#     border=0,
-#     cursor='hand1',
-#     text='Algorithm 2',
-#     relief="raised",
-#     command=lambda: [dstoggle(dsbutton2), updategraph()]
-# )
-# dsbutton2.grid(row=0, column=1)
-#button2.pack()
-#button2.place(x=100)
 
 dsbutton3 = tkinter.Button(
     dataset_frame,
@@ -305,7 +336,8 @@ dsbutton3 = tkinter.Button(
     command=lambda: [dstoggle(dsbutton3), updategraph()]
 )
 dsbutton3.grid(row=0, column=2,  padx=(10,100))
-#button3.pack()
+
+
 freq_frame = tkinter.Frame(root, bg = '#7A7776', pady=40, height=5)
 freq_frame.pack()
 freq_frame.columnconfigure(1, weight=1)
@@ -328,8 +360,6 @@ freqbutton1 = tkinter.Button(
     command= lambda: [freqtoggle(freqbutton1), updategraph()]
 )
 freqbutton1.grid(row=0, column=0, padx=(100,10))
-#button1.pack()
-#button1.place(x=100)
 
 freqbutton2 = tkinter.Button(
     freq_frame,
@@ -348,9 +378,7 @@ freqbutton2 = tkinter.Button(
     relief="raised",
     command=lambda: [freqtoggle(freqbutton2), updategraph()]
 )
-freqbutton2.grid(row=0, column=1)
-#button2.pack()
-#button2.place(x=100)
+freqbutton2.grid(row=0, column=1)#
 
 freqbutton3 = tkinter.Button(
     freq_frame,
@@ -370,7 +398,5 @@ freqbutton3 = tkinter.Button(
     command=lambda: [freqtoggle(freqbutton3), updategraph()]
 )
 freqbutton3.grid(row=0, column=2,  padx=(10,100))
-#b = Button(root,text = "Simple", style='W.TButton') 
-#b.pack()  
 
 root.mainloop()
