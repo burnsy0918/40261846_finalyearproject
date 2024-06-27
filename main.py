@@ -135,7 +135,7 @@ def updategraph():
             if(sourcebutton1['relief']=='sunken'):
                 data_points = fetch_values.fetch_FGG_energy_values(dsbutton1['relief'], dsbutton3['relief'],
                                                 freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
-            elif(sourcebutton1['relief']=='sunken'):
+            elif(sourcebutton2['relief']=='sunken'):
                 data_points = fetch_values.fetch_FGG_energy_values_SQL(dsbutton1['relief'], dsbutton3['relief'],
                                                 freqbutton1['relief'], freqbutton2['relief'], freqbutton3['relief'])
             dataframe = pd.DataFrame(data_points)
@@ -231,7 +231,7 @@ button1 = tkinter.Button(
     width=16,
     border=8,
     cursor='hand1',
-    text='Conventional Lagrance',
+    text='Conventional Lagrange',
     relief="raised",
     command= lambda: [toggle(button1), updategraph()]
 )
