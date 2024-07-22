@@ -107,7 +107,7 @@ def updategraph():
                 return
             
             dataframe = dataframe[['N', 'Time (ms)']].groupby('N').sum()
-            dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
+            dataframe.plot(kind='line', legend=FALSE, ax=figure_plot,
                 color='r', marker='o', fontsize=10)
             avg_y =dataframe['Time (ms)'].mean()
             figure_plot.axhline(y=avg_y, color='r', linestyle='--')
@@ -130,7 +130,7 @@ def updategraph():
                 return
             
             dataframe = dataframe[['N', 'Time (ms)']].groupby('N').sum()
-            dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
+            dataframe.plot(kind='line', legend=FALSE, ax=figure_plot,
                 color='g', marker='o', fontsize=10)
             avg_y =dataframe['Time (ms)'].mean()
             figure_plot.axhline(y=avg_y, color='g', linestyle='--')
@@ -154,7 +154,7 @@ def updategraph():
                 return
             
             dataframe = dataframe[['N', 'Energy (V)x10^6']].groupby('N').sum()
-            dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
+            dataframe.plot(kind='line', legend=FALSE, ax=figure_plot,
                 color='r', marker='o', fontsize=10)
             avg_y =dataframe['Energy (V)x10^6'].mean()
             figure_plot.axhline(y=avg_y, color='r', linestyle='--')
@@ -176,7 +176,7 @@ def updategraph():
                 return
             
             dataframe = dataframe[['N', 'Energy (V)x10^6']].groupby('N').sum()
-            dataframe.plot(kind='line', legend=TRUE, ax=figure_plot,
+            dataframe.plot(kind='line', legend=FALSE, ax=figure_plot,
                 color='g', marker='o', fontsize=10)
             avg_y =dataframe['Energy (V)x10^6'].mean()
             figure_plot.axhline(y=avg_y, color='g', linestyle='--')
@@ -211,7 +211,7 @@ figure_plot = figure.add_subplot(1, 1, 1)
 figure_plot.set_ylabel('Time (ms)') 
 line_graph = FigureCanvasTkAgg(figure, chart_frame)
 line_graph.get_tk_widget().pack(side=tkinter.TOP, fill=tkinter.BOTH)
-figure_plot.set_title('Line Graph')
+figure_plot.set_title('Comparing Lomb Algorithms')
 
 sourcebutton1 = tkinter.Button(
     chart_frame,

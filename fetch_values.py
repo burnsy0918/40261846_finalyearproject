@@ -84,7 +84,7 @@ def fetch_FGG_energy_values_SQL(dsbutton1, dsbutton3, precbutton1, precbutton2, 
         logging.info('SQL fetch successful!')
     return data_points
 
-def fetch_Lagrange_energy_values_SQL(dsbutton1, dsbutton3, precbutton1, precbutton2, precbutton3):
+def fetch_lagrange_energy_values_SQL(dsbutton1, dsbutton3, precbutton1, precbutton2, precbutton3):
     if(dsbutton1== 'sunken' and precbutton1== 'sunken'):
         data_points= pd.read_sql("Select * FROM dbo.LagrangeEnergySQLLowPrecisionGrid", cnxn)
     if(dsbutton1== 'sunken' and precbutton2== 'sunken'):
